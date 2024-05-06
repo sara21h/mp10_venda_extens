@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <template id="custom_report_saleorder_document" inherit_id="sale.report_saleorder_document">
+        <xpath expr="//th[@name='th_description']" position="before">
+            <div name="th_correu_preferencial" class="text-start">Correu Preferencial<br/>
+                <strong t-field="doc.correu_preferencial"/>
+            </div>
+            <br/>
+            <div name="th_num_articles" class="text-start">Número d'articles<br/>
+                <strong t-field="doc.num_articles"/>
+            </div>
+        </xpath>
+    </template>
+</odoo>

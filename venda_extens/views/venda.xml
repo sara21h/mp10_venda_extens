@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <data>
+        <record model="ir.ui.view" id="view_sale_order_form_inherited">
+            <field name="name">sale.order.form.inherited</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <xpath expr="//form/sheet/group" position="before">
+                    <group>
+                        <group>
+                            <field name="num_articles" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="correu_preferencial"/>
+                        </group>
+                    </group>
+                    <div style="margin-top: 30px;"/>
+                </xpath>
+            </field>
+        </record>
+        
+        <record id="view_order_tree_menu" model="ir.ui.view">
+            <field name="name">sale.order.tree.custom</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_tree"/> 
+            <field name="arch" type="xml">
+                <xpath expr="//tree" position="inside">
+                    <field name="user_id" string="Nom del comercial"/>
+                    <field name="state" string="Estat de la comanda"/>
+                    <field name="order_count" string="Nombre de comandes"/>
+                    <field name="total_amount" string="Suma total dels imports"/>
+                </xpath>
+            </field>
+            <field name="priority" eval="15"/> 
+        </record>
+
+
+        <record id="view_order_form" model="ir.ui.view">
+            <field name="name">sale.order.form</field>
+            <field name="model">sale.order</field>
+            <field name="arch" type="xml">
+                <form string="Detalls de la comanda de venda">
+                    <field name="user_id" domain="[('groups_id', '=', 21), ('share', '=', False)]"/>
+                    <field name="state"/>
+                    <field name="order_count"/>
+                    <field name="total_amount"/>
+                    <field name="company_id"/> 
+                </form>
+            </field>
+        </record>
+
+       <record id="action_custom_report" model="ir.actions.act_window">
+            <field name="name">Informes personalitzats</field>
+            <field name="res_model">sale.order</field>
+            <field name="view_mode">tree,form</field>
+            <field name="views">[(view_order_tree_menu, 'tree'), (view_order_form, 'form')]</field>
+        </record>
+
+        <menuitem id="product_menu_catalog"
+            name="Informe de les comandes"
+            parent="sale.sale_menu_root">
+
+            <menuitem id="menu_custom_report"
+                name="Informes personalitzats"
+                action="action_custom_report"
+                sequence="10"/>
+        </menuitem>
+    </data>
+</odoo>

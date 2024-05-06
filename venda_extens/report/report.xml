@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <template id="venda_extens.template_report_xml">
+            <t t-call="web.basic_layout">
+                <div class="page">
+                    <div class="oe_structure">
+                        <div class="row mt32 mb32">
+                            <div class="col-xs-12">
+                                <h2>Informe Personalitzat</h2>
+                                <p>Dades principals de l’empresa:</p>
+                                <ul>
+                                    <li>Nom: <t t-esc="docs.company_id.name"/></li>
+                                    <li>Direcció: <t t-esc="docs.company_id.street"/>, <t t-esc="docs.company_id.city"/>, <t t-esc="docs.company_id.country_id.name"/></li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="row mt32">
+                            <div class="col-xs-12">
+                                <h3>Dades de la comanda:</h3>
+                                <table class="table table-condensed">
+                                    <thead>
+                                        <tr>
+                                            <th>Nom del comercial</th>
+                                            <th>Estat de la comanda</th>
+                                            <th>Nombre de comandes</th>
+                                            <th>Suma total dels imports</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <t t-foreach="docs" t-as="doc">
+                                            <tr>
+                                                <td><t t-esc="doc.user_id.name or ''"/></td>
+                                                <td><t t-esc="doc.state"/></td>
+                                                <td><t t-esc="doc.order_count"/></td>
+                                                <td><t t-esc="doc.total_amount"/></td>
+                                            </tr>
+                                        </t>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </t>
+        </template>
+
+
+        <record id="action_custom_report_print" model="ir.actions.act_url">
+            <field name="name">Imprimir Informe Personalitzat</field>
+            <field name="url">/my/custom_report/print/%(object.id)s</field>
+            <field name="target">self</field>
+        </record>
+
+        <record id="action_custom_report_print_xml" model="ir.actions.report">
+            <field name="name">Informe Personalitzat</field>
+            <field name="model">sale.order</field>
+            <field name="report_name">venda_extens.template_report_xml</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="binding_model_id" ref="model_sale_order"/>
+        </record>
+
+        <record id="report_custom_order_template" model="ir.actions.report">
+            <field name="name">Informe Personalitzat</field>
+            <field name="model">sale.order</field>
+            <field name="report_type">qweb-pdf</field>
+            <field name="report_name">venda_extens.template_report_xml</field>
+            <field name="report_file">venda_extens.template_report_xml</field>
+            <field name="print_report_name">'Imprimir Informe Personalitzat'</field>
+        </record>
+
+
+    </data>
+</odoo>
